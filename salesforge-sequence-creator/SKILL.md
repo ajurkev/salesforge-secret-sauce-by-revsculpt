@@ -175,45 +175,100 @@ Type `preview [1-4]` to see full copy. Otherwise, approve to continue.
 
 After approval:
 
-```
-1. Verify workspace
-   GET /workspaces/current → confirm correct workspace
-   If wrong: ask user to switch in Salesforge dashboard, wait for confirmation
+**Two APIs in play:**
+- Core API: `https://api.salesforge.ai/public/v2`
+- Multichannel API: `https://multichannel-api.salesforge.ai/public`
 
-2. Check for name conflicts
-   GET /sequences → scan for duplicate names
+```
+1. Validate API key
+   GET /me → confirm auth works, get accountId
+
+2. Get workspace
+   GET /workspaces → list all workspaces → user confirms which one
+   → save workspaceID
+
+3. Check for name conflicts
+   GET /multichannel/workspaces/{workspaceID}/sequences?limit=100
+   → scan for duplicate names
    If conflict: append "v2" or ask user
 
-3. Create sequence
-   POST /sequences → save returned sequence_id
-   Name format: "[Client] - [Description]"
+4. Create sequence
+   POST /multichannel/workspaces/{workspaceID}/sequences
+   Body: {"name": "[Client] - [Description]", "timezone": "America/New_York"}
+   → save sequenceID
 
-4. Configure sequence settings
-   - Tracking: open_tracking=false, click_tracking=false
-   - Schedule: Mon-Fri, 08:00-17:00 ET
-   - Limits: max_emails_per_day=200, max_new_leads_per_day=50
+5. Get email action ID
+   GET /multichannel/actions?channel=email
+   → find the "send email" action → save actionId
 
-5. Add email steps
-   POST /sequences/{id}/steps → all steps in one call
-   Step 1: is_reply=false, wait_days=1, subject=[spintaxed], body=[HTML]
-   Step 2: is_reply=true,  wait_days=2, subject=[step1 subject], body=[HTML]
-   Step 3: is_reply=false, wait_days=3, subject=[spintaxed], body=[HTML]
-   Step 4: is_reply=true,  wait_days=2, subject=[step3 subject], body=[HTML]
+6. Get root branch
+   GET /multichannel/workspaces/{workspaceID}/sequences/{sequenceID}/branches
+   → save branchId from root branch
 
-6. Attach sender profiles
-   Read sender-cache.md → if cached, use those IDs
-   If not cached: GET /sender-profiles → filter → cache → attach
-   POST /sequences/{id}/senders
+7. Create email nodes (one per step)
+   POST /multichannel/workspaces/{workspaceID}/sequences/{sequenceID}/nodes/actions
 
-7. Verify sequence
-   GET /sequences/{id} → confirm step count, subjects, bodies intact
+   For each email step:
+   {
+     "actionId": "[email action ID from step 5]",
+     "branchId": "[branch ID from step 6]",
+     "waitDays": [delay in days],
+     "variants": [
+       {"subject": "[spintaxed subject]", "body": "<p>HTML body</p>"}
+     ]
+   }
+
+   Step 1: waitDays=0 (send immediately on enrollment)
+   Step 2: waitDays=2-3 (reply thread)
+   Step 3: waitDays=3-4 (new thread)
+   Step 4: waitDays=2-3 (reply thread)
+
+8. Set schedule
+   PUT /multichannel/workspaces/{workspaceID}/sequences/{sequenceID}/schedule
+   {
+     "timezone": "America/New_York",
+     "schedule": {
+       "monday": {"enabled": true, "from": 8, "to": 17},
+       "tuesday": {"enabled": true, "from": 8, "to": 17},
+       "wednesday": {"enabled": true, "from": 8, "to": 17},
+       "thursday": {"enabled": true, "from": 8, "to": 17},
+       "friday": {"enabled": true, "from": 8, "to": 17},
+       "saturday": {"enabled": false, "from": 0, "to": 0},
+       "sunday": {"enabled": false, "from": 0, "to": 0}
+     }
+   }
+   NOTE: from/to are integer hours (0-23), NOT "HH:MM" strings
+
+9. Configure settings
+   PATCH /multichannel/workspaces/{workspaceID}/sequences/{sequenceID}/settings
+   {
+     "plainTextEmailsEnabled": true,
+     "openTrackingEnabled": false,
+     "optOutLinkEnabled": false,
+     "optOutTextEnabled": false,
+     "ccAndBccEnabled": false,
+     "trackOpportunitiesEnabled": false
+   }
+
+10. Attach sender profiles
+    Read sender-cache.md → if cached, use those IDs
+    If not cached:
+      GET /multichannel/workspaces/{workspaceID}/sender-profiles?limit=100
+      → show list → user selects → cache to sender-cache.md
+    POST /multichannel/workspaces/{workspaceID}/sequences/{sequenceID}/sender-profiles
+    {"senderProfileIds": ["id1", "id2"]}
+
+11. Verify
+    GET /multichannel/workspaces/{workspaceID}/sequences/{sequenceID}
+    GET /multichannel/workspaces/{workspaceID}/sequences/{sequenceID}/nodes
+    → confirm node count, subjects, bodies intact
 ```
 
 ### IMPORTANT: DO NOT ACTIVATE.
 
-**Never start/resume/activate a sequence. Launch is always done manually by the user in the Salesforge dashboard.**
+**Never call the /launch endpoint or set status to "active". The sequence stays in DRAFT status. Launch is always done manually by the user in the Salesforge dashboard.**
 
-Show final confirmation: "Sequence '[name]' created and paused. Go to Salesforge dashboard to review and activate."
+Show final confirmation: "Sequence '[name]' created in DRAFT. Go to Salesforge dashboard to review and launch."
 
 ---
 
@@ -221,17 +276,15 @@ Show final confirmation: "Sequence '[name]' created and paused. Go to Salesforge
 
 | Error | Response |
 |---|---|
+| 400 Bad Request | Check body format, required fields (see reference skill) |
 | 401 Unauthorized | API key invalid — regenerate in Settings → Integrations |
-| 403 Forbidden | Feature not available on plan — inform user |
-| 404 Not Found | Endpoint path likely wrong — check salesforge reference, try alternate paths |
-| 409 Conflict | Sequence name exists — append v2 or ask user |
-| 422 Validation | Check field names against reference — may need format update |
-| 429 Rate Limited | Wait 60s, retry |
-| Workspace wrong | Ask user to switch in dashboard, confirm |
+| 402 Payment Required | Insufficient credits — inform user |
+| 403 Forbidden | Feature not available on plan |
+| 404 Not Found | Check workspaceID/sequenceID — list resources again |
+| 500 Server Error | Retry once. If persistent, switch to fallback mode |
 | Spam fixer fails | Fall back to manual Cyrillic fixes using character-map.md |
 | Spintax validation fails | Show broken token, auto-repair, re-validate |
 | User requests changes at gate | Re-run from affected step, show new approval gate |
-| ⚠️ Unknown endpoint structure | Log the error, output copy for manual paste as fallback |
 
 ---
 
