@@ -1,6 +1,6 @@
 # Salesforge Campaign Skills for Claude Code
 
-Modular Claude Code skills for automating cold email campaign setup via the Salesforge API. Paste copy → spam check → spintax → deploy sequence — without leaving the terminal.
+Orchestrate your entire Salesforge campaign workflow from Claude Code — sequence creation, contact management, enrollment, deliverability checks, and more. All without leaving the terminal.
 
 Created by [RevSculpt](https://revsculpt.com)
 
@@ -64,10 +64,6 @@ Generate your API key in Salesforge:
 3. Store the key — you'll need it for API calls
 
 > **Note:** Salesforge does not currently provide an official MCP server. These skills use direct HTTP API calls via the [Salesforge API v2](https://api.salesforge.ai/public/v2/swagger/index.html). If/when an official MCP becomes available, the reference skill will be updated.
-
-## Compatibility
-
-Works alongside the [Email Bison Campaign Skills](https://github.com/geeky-rambo/-claude-campaign-skills) — same spam-fixer and spintax-creator skills are reused. The sequence-creator orchestrator chains them automatically.
 
 ## Development Status
 
