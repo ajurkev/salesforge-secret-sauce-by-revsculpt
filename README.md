@@ -2,6 +2,8 @@
 
 Modular Claude Code skills for automating cold email campaign setup via the Salesforge API. Paste copy → spam check → spintax → deploy sequence — without leaving the terminal.
 
+Created by [RevSculpt](https://revsculpt.com)
+
 ## Skills
 
 | Skill | Command | Purpose |
@@ -34,7 +36,7 @@ Launch manually in Salesforge dashboard
 
 ```bash
 # Clone
-git clone https://github.com/YOUR_ORG/salesforge-campaign-skills.git
+git clone https://github.com/ajurkev/salesforge-campaign-skills.git
 
 # Copy skills to Claude Code
 cp -r salesforge-campaign-skills/salesforge-reference ~/.claude/skills/
@@ -61,7 +63,7 @@ Generate your API key in Salesforge:
 2. Click **Generate API Key**
 3. Store the key — you'll need it for API calls
 
-> **Note:** Salesforge does not currently provide an official MCP server. These skills use direct HTTP API calls. If/when an official MCP becomes available, the reference skill will be updated.
+> **Note:** Salesforge does not currently provide an official MCP server. These skills use direct HTTP API calls via the [Salesforge API v2](https://api.salesforge.ai/public/v2/swagger/index.html). If/when an official MCP becomes available, the reference skill will be updated.
 
 ## Compatibility
 
@@ -75,16 +77,17 @@ Works alongside the [Email Bison Campaign Skills](https://github.com/geeky-rambo
 | Phase 2: Contact Manager + Deliverability | ✅ Built |
 | Phase 3: Leadsforge Search + Infraforge DNS | 🔜 Planned |
 
-## API Documentation Status
+## API Coverage
 
-Salesforge does not publish a comprehensive public API reference. Endpoint specs in these skills are derived from:
-- Official integration guides (Clay, Make, Zapier)
-- Webhook documentation
-- Help center articles
-- Live API testing
+All endpoints are derived from the official [Salesforge API v2 Swagger spec](https://api.salesforge.ai/public/v2/swagger/index.html). The API uses two base URLs:
 
-Endpoints marked with `⚠️ UNCONFIRMED` need validation against the actual API. Contact Salesforge support (hey@salesforge.ai) or request OpenAPI spec for full coverage.
+- **Core API:** `https://api.salesforge.ai/public/v2` — workspaces, contacts, mailboxes, webhooks, DNC
+- **Multichannel API:** `https://multichannel-api.salesforge.ai/public` — sequences, nodes, enrollments, sender profiles, schedules
 
 ## License
 
 MIT
+
+---
+
+Built by [RevSculpt](https://revsculpt.com) — AI-native B2B outbound execution.
