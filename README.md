@@ -1,6 +1,6 @@
 # Salesforge Campaign Skills for Claude Code
 
-Orchestrate your entire Salesforge campaign workflow from Claude Code — sequence creation, contact management, enrollment, deliverability checks, and more. All without leaving the terminal.
+Orchestrate your entire Salesforge campaign workflow from Claude Code — sequence creation, contact upload, enrollment, deliverability checks. All without leaving the terminal.
 
 Created by [RevSculpt](https://revsculpt.com)
 
@@ -9,25 +9,21 @@ Created by [RevSculpt](https://revsculpt.com)
 | Skill | Command | Purpose |
 |-------|---------|---------|
 | `salesforge-reference` | `/salesforge` | API rules, endpoints, variable mapping, defaults |
-| `salesforge-sequence-creator` | `/salesforge-sequence` | **Main pipeline:** copy → spam fix → spintax → create sequence (paused) |
-| `salesforge-contact-manager` | `/salesforge-contacts` | Import, enrich, validate contacts. Manage DNC lists |
+| `salesforge-sequence-creator` | `/salesforge-sequence` | **Main pipeline:** paste copy → create sequence in Salesforge (paused) |
+| `salesforge-contact-manager` | `/salesforge-contacts` | Import contacts from local CSV or Clay export. Validate, dedupe, manage DNC |
 | `salesforge-enrollment-manager` | `/salesforge-enroll` | Enroll contacts into sequences, monitor, pause/resume |
-| `salesforge-deliverability-checker` | `/salesforge-health` | Warmforge warmup status, sender reputation, placement tests |
+| `salesforge-deliverability-checker` | `/salesforge-health` | Mailbox warmup status, sender reputation, DNS health |
 
-## Architecture
+## How It Works
 
 ```
-Contact Search (Leadsforge)
+Check Deliverability               → /salesforge-health
     ↓
-Enrich Data (Leadsforge)
+Import Contacts from CSV or Clay   → /salesforge-contacts
     ↓
-Import Contacts (salesforge-contact-manager)
+Create Sequence (paste copy)       → /salesforge-sequence
     ↓
-Write Copy (your existing copy-writer / spintax-creator skills)
-    ↓
-Create Sequence (salesforge-sequence-creator) ← MAIN PIPELINE
-    ↓
-Enroll & Monitor (salesforge-enrollment-manager)
+Enroll Contacts into Sequence      → /salesforge-enroll
     ↓
 Launch manually in Salesforge dashboard
 ```
@@ -38,32 +34,31 @@ Launch manually in Salesforge dashboard
 # Clone
 git clone https://github.com/ajurkev/salesforge-campaign-skills.git
 
-# Copy skills to Claude Code
-cp -r salesforge-campaign-skills/salesforge-reference ~/.claude/skills/
-cp -r salesforge-campaign-skills/salesforge-sequence-creator ~/.claude/skills/
-cp -r salesforge-campaign-skills/salesforge-contact-manager ~/.claude/skills/
-cp -r salesforge-campaign-skills/salesforge-enrollment-manager ~/.claude/skills/
-cp -r salesforge-campaign-skills/salesforge-deliverability-checker ~/.claude/skills/
-
-# Or copy to project-level skills
+# Copy all skills to your project
 cp -r salesforge-campaign-skills/salesforge-* /path/to/project/.claude/skills/
+
+# Or to global Claude Code skills
+cp -r salesforge-campaign-skills/salesforge-* ~/.claude/skills/
 ```
 
 ## Prerequisites
 
-- Claude Code CLI
-- Python 3.x with Playwright (`pip install playwright && playwright install chromium`)
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
+- Salesforge account with API access
 - Salesforge API key (Settings → Integrations → API Key)
-- Salesforge workspace with active mailboxes
 
 ## API Key Setup
 
-Generate your API key in Salesforge:
-1. Go to **Settings → Integrations**
+1. Go to **Settings → Integrations** in Salesforge
 2. Click **Generate API Key**
-3. Store the key — you'll need it for API calls
+3. Store the key — it's used in the `Authorization` header for all API calls
 
-> **Note:** Salesforge does not currently provide an official MCP server. These skills use direct HTTP API calls via the [Salesforge API v2](https://api.salesforge.ai/public/v2/swagger/index.html). If/when an official MCP becomes available, the reference skill will be updated.
+## API Coverage
+
+All endpoints come from the official [Salesforge API v2 Swagger spec](https://api.salesforge.ai/public/v2/swagger/index.html). Two base URLs:
+
+- **Core API:** `https://api.salesforge.ai/public/v2` — workspaces, contacts, mailboxes, webhooks, DNC
+- **Multichannel API:** `https://multichannel-api.salesforge.ai/public` — sequences, nodes, enrollments, sender profiles, schedules
 
 ## Development Status
 
@@ -71,14 +66,9 @@ Generate your API key in Salesforge:
 |-------|--------|
 | Phase 1: Reference + Sequence Creator + Enrollment | ✅ Built |
 | Phase 2: Contact Manager + Deliverability | ✅ Built |
-| Phase 3: Leadsforge Search + Infraforge DNS | 🔜 Planned |
-
-## API Coverage
-
-All endpoints are derived from the official [Salesforge API v2 Swagger spec](https://api.salesforge.ai/public/v2/swagger/index.html). The API uses two base URLs:
-
-- **Core API:** `https://api.salesforge.ai/public/v2` — workspaces, contacts, mailboxes, webhooks, DNC
-- **Multichannel API:** `https://multichannel-api.salesforge.ai/public` — sequences, nodes, enrollments, sender profiles, schedules
+| Phase 3: Leadsforge Search + Enrichment | 🔜 Planned |
+| Phase 4: Infraforge DNS + Domain Setup | 🔜 Planned |
+| Phase 5: Analytics + Reporting | 🔜 Planned |
 
 ## License
 
@@ -86,4 +76,4 @@ MIT
 
 ---
 
-Built by [RevSculpt](https://revsculpt.com) — AI-native B2B outbound execution.
+Built by [RevSculpt](https://revsculpt.com)
