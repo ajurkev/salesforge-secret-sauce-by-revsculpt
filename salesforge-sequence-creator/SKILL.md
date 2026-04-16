@@ -254,8 +254,8 @@ After approval:
        "wednesday": {"enabled": true, "from": 8, "to": 17},
        "thursday": {"enabled": true, "from": 8, "to": 17},
        "friday": {"enabled": true, "from": 8, "to": 17},
-       "saturday": {"enabled": false, "from": 0, "to": 0},
-       "sunday": {"enabled": false, "from": 0, "to": 0}
+       "saturday": {"enabled": false, "from": 0, "to": 23},
+       "sunday": {"enabled": false, "from": 0, "to": 23}
      }
    }
    NOTE: from/to are integer hours (0-23), NOT "HH:MM" strings

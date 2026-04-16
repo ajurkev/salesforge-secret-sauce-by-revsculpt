@@ -287,17 +287,19 @@ Set schedule. Body:
 {
   "timezone": "America/New_York (REQUIRED)",
   "schedule": {
-    "sunday": {"enabled": false, "from": 0, "to": 0},
+    "sunday": {"enabled": false, "from": 0, "to": 23},
     "monday": {"enabled": true, "from": 8, "to": 17},
     "tuesday": {"enabled": true, "from": 8, "to": 17},
     "wednesday": {"enabled": true, "from": 8, "to": 17},
     "thursday": {"enabled": true, "from": 8, "to": 17},
     "friday": {"enabled": true, "from": 8, "to": 17},
-    "saturday": {"enabled": false, "from": 0, "to": 0}
+    "saturday": {"enabled": false, "from": 0, "to": 23}
   }
 }
 ```
-**Note:** `from`/`to` are hours 0-23 (integers), NOT "HH:MM" strings.
+**Notes:**
+- `from`/`to` are hours 0-23 (integers), NOT "HH:MM" strings
+- **TRAP:** `to` must be greater than `from` — even on disabled days. `"from": 0, "to": 0` returns 422. Use `"from": 0, "to": 23` for disabled days.
 
 ---
 
