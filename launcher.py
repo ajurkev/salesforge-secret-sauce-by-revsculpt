@@ -204,12 +204,68 @@ def create_campaign(headers, wks, campaign_file, campaign_num):
     return seq_id
 
 
+def attach_senders_and_enroll(headers, wks, sender_profile_id, created_sequences):
+    """Attach sender profiles and enroll contacts to all created sequences."""
+
+    # Get all contacts in workspace
+    print("\n--- Attaching senders + enrolling contacts ---\n")
+    print("Fetching contacts...")
+    contacts = []
+    offset = 0
+    while True:
+        data = api("GET", f"{CORE}/workspaces/{wks}/contacts?limit=100&offset={offset}", headers)
+        if not data or not data.get("data"):
+            break
+        contacts.extend(data["data"])
+        if len(data["data"]) < 100:
+            break
+        offset += 100
+
+    lead_ids = [c["id"] for c in contacts]
+    print(f"Found {len(lead_ids)} contacts to enroll")
+
+    if not lead_ids:
+        print("WARNING: No contacts found. Skipping enrollment.")
+        return
+
+    success = 0
+    for item in created_sequences:
+        seq_id = item["sequence_id"]
+        fname = item["file"]
+        print(f"  [{seq_id}] {fname[:40]}...", end="", flush=True)
+
+        # Attach sender
+        result = api("POST", f"{BASE}/workspaces/{wks}/sequences/{seq_id}/sender-profiles", headers, {
+            "senderProfileIds": [sender_profile_id]
+        })
+        if result:
+            print(f" sender OK", end="", flush=True)
+        time.sleep(DELAY)
+
+        # Enroll contacts
+        result = api("POST", f"{BASE}/workspaces/{wks}/sequences/{seq_id}/enrollments", headers, {
+            "filters": {"leadIds": lead_ids},
+            "limit": len(lead_ids)
+        })
+        if result:
+            enrolled = len(result.get("leadIds", []))
+            print(f" enrolled {enrolled}", end="", flush=True)
+            success += 1
+        time.sleep(DELAY)
+
+        print(" DONE")
+
+    print(f"\nSenders + contacts: {success}/{len(created_sequences)} sequences ready")
+
+
 def main():
-    parser = argparse.ArgumentParser(description="Launch 50 campaigns for webinar demo")
+    parser = argparse.ArgumentParser(description="Launch multichannel campaigns in Salesforge")
     parser.add_argument("--key", required=True, help="Salesforge API key")
     parser.add_argument("--workspace", required=True, help="Workspace ID")
+    parser.add_argument("--sender-profile-id", type=int, default=None, help="Sender profile ID to attach (auto-detects if not set)")
     parser.add_argument("--limit", type=int, default=50, help="Max campaigns to create")
     parser.add_argument("--start", type=int, default=1, help="Start from campaign N")
+    parser.add_argument("--campaigns-dir", default=None, help="Path to campaign files (default: ./campaigns/)")
     args = parser.parse_args()
 
     headers = {"Authorization": args.key, "Content-Type": "application/json", "Accept": "application/json"}
@@ -222,13 +278,37 @@ def main():
         return
     print(f"Connected: {me.get('apiKeyName', 'unknown')}")
 
+    # Auto-detect sender profile if not provided
+    sender_id = args.sender_profile_id
+    if not sender_id:
+        print("Detecting sender profiles...")
+        profiles = api("GET", f"{BASE}/workspaces/{wks}/sender-profiles?limit=100", headers)
+        if profiles and profiles.get("profiles"):
+            sender_id = profiles["profiles"][0]["id"]
+            sender_name = profiles["profiles"][0].get("name", "unknown")
+            print(f"Using sender profile: {sender_name} (ID: {sender_id})")
+        else:
+            print("WARNING: No sender profiles found. Sequences will be created without senders.")
+
     # Find campaign files
-    campaigns_dir = os.path.dirname(os.path.abspath(__file__)) + "/campaigns"
+    campaigns_dir = args.campaigns_dir or (os.path.dirname(os.path.abspath(__file__)) + "/campaigns")
+    if not os.path.exists(campaigns_dir):
+        print(f"ERROR: campaigns directory not found: {campaigns_dir}")
+        print("Create a 'campaigns/' folder with .txt campaign files. See examples/ for format.")
+        return
+
     files = sorted([f for f in os.listdir(campaigns_dir) if f.endswith('.txt')])
     files = files[args.start - 1:args.limit]
 
-    print(f"\nCreating {len(files)} multichannel sequences...\n")
+    if not files:
+        print(f"ERROR: No .txt campaign files found in {campaigns_dir}")
+        return
 
+    print(f"\n{'='*60}")
+    print(f"LAUNCHING {len(files)} MULTICHANNEL SEQUENCES")
+    print(f"{'='*60}\n")
+
+    # Phase 1: Create all sequences
     created = []
     for i, f in enumerate(files):
         num = i + args.start
@@ -240,7 +320,18 @@ def main():
         time.sleep(1)
 
     print(f"\n{'='*60}")
-    print(f"DONE: {len(created)}/{len(files)} sequences created in DRAFT")
+    print(f"PHASE 1 DONE: {len(created)}/{len(files)} sequences created in DRAFT")
+    print(f"{'='*60}")
+
+    # Phase 2: Attach senders + enroll contacts
+    if created and sender_id:
+        attach_senders_and_enroll(headers, wks, sender_id, created)
+
+    print(f"\n{'='*60}")
+    print(f"ALL DONE: {len(created)} sequences ready in DRAFT")
+    print(f"Senders: {'attached' if sender_id else 'NONE — add manually'}")
+    print(f"Contacts: enrolled")
+    print(f"Status: DRAFT — launch manually in Salesforge dashboard")
     print(f"{'='*60}")
 
 
