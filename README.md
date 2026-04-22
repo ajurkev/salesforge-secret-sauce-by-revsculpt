@@ -7,11 +7,10 @@ Created by [RevSculpt](https://revsculpt.com)
 ## What's Inside
 
 ```
-├── salesforge-reference/SKILL.md      → Claude Code skill: API rules + traps
+├── salesforge-reference/SKILL.md      → Claude Code skill: MCP rules + traps
 ├── salesforge-sequence-creator/SKILL.md → Claude Code skill: paste copy → sequence
-├── launcher.py                         → Create 50 sequences from campaign files
-├── attach.py                           → Attach senders + enroll contacts to all sequences
-└── examples/                           → Sample campaigns + contact CSV
+├── launcher.py                         → One script: create sequences + attach senders + enroll contacts
+└── examples/                           → Sample multichannel campaigns + contact CSV
 ```
 
 ## Quick Start
@@ -40,12 +39,21 @@ In Claude Code, type `/salesforge-sequence` and paste your email copy. It will:
 ### 4. Use the launcher (50 campaigns at once)
 
 ```bash
-# Create your campaign files (see examples/ for format)
-# Then run:
+# Create your campaign files in a campaigns/ folder (see examples/ for format)
+# Then run one command — it does everything:
 python3 launcher.py --key YOUR_SALESFORGE_API_KEY --workspace YOUR_WORKSPACE_ID
+```
 
-# After sequences are created, attach senders + enroll contacts:
-python3 attach.py --key YOUR_SALESFORGE_API_KEY --workspace YOUR_WORKSPACE_ID --sender-profile-id YOUR_SENDER_ID
+The launcher runs two phases automatically:
+1. **Phase 1:** Creates all sequences (nodes, schedule, settings)
+2. **Phase 2:** Auto-detects sender profile → attaches to all sequences → enrolls all contacts
+
+Optional flags:
+```bash
+--sender-profile-id 5830    # Specify sender (auto-detects if not set)
+--limit 10                  # Create only first 10 campaigns
+--start 5                   # Start from campaign #5
+--campaigns-dir /path/to/   # Custom campaign folder
 ```
 
 ## Campaign File Format
