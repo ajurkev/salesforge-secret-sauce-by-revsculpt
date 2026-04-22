@@ -171,78 +171,59 @@ Type `preview [1-4]` to see full copy. Otherwise, approve to continue.
 
 ---
 
-### Step 9 — Create Sequence in Salesforge
+### Step 9 — Push to Salesforge via MCP
 
-After approval:
-
-**Multichannel API:** `https://multichannel-api.salesforge.ai/public/multichannel`
-**Auth:** `Authorization: <API_KEY>` — plain key, no Bearer
+After approval, use the Salesforge MCP tools (NOT raw API calls):
 
 ```
-1. Validate API key
-   GET https://api.salesforge.ai/public/v2/me → confirm auth
+1. mcp__salesforge__get_me → validate API key
 
-2. Get workspace
-   GET https://api.salesforge.ai/public/v2/workspaces → user confirms
+2. mcp__salesforge__list_workspaces → user confirms which workspace
    → save workspaceID
 
-3. Create sequence
-   POST /workspaces/{workspaceID}/sequences
-   Body: {"name": "[Client] - [Description]", "timezone": "America/New_York"}
-   → save sequenceID (INTEGER)
+3. mcp__salesforge__create_sequence
+   name: "[Client] - [Description]", timezone: "America/New_York"
+   → save sequenceID
 
-4. Get email action ID
-   GET /actions?channel=email
-   → actionId = 3 (confirmed)
+4. For EACH email step (BRANCH CHAINING):
 
-5. For EACH email step (BRANCH CHAINING):
+   a. mcp__salesforge__list_sequence_branches → get LAST branch ID
 
-   a. GET /workspaces/{wks}/sequences/{seq}/branches
-      → use LAST branch ID
+   b. mcp__salesforge__create_action_node
+      actionId: 3 (email)
+      branchId: [LAST branch ID — integer]
+      waitDays: 0 for step 1, 3 for step 2, 5 for step 3
+      variants: [{
+        isEnabled: true,
+        exposureInPercentage: 100,
+        metadata: {
+          name: "Variant A",
+          subject: "{{spintaxed subject | option 2}}",
+          message: "<p>Hey {{first_name}},</p><p><br></p><p>{{Body | variant}}</p>"
+        }
+      }]
 
-   b. POST /workspaces/{wks}/sequences/{seq}/nodes/actions
-      {
-        "actionId": 3,
-        "branchId": [LAST_BRANCH_ID],
-        "waitDays": [0 for step 1, 3 for step 2, 4 for step 3],
-        "distributionStrategy": "equal",
-        "variants": [{
-          "isEnabled": true,
-          "exposureInPercentage": 100,
-          "metadata": {
-            "name": "Variant A",
-            "subject": "{{spintaxed subject | option 2}}",
-            "message": "<p>Hey {{first_name}},</p><p><br></p><p>{{Body text | variant}}</p>"
-          }
-        }]
-      }
+   c. CRITICAL: After each node, a NEW branch is created.
+      Re-fetch branches before adding the next node.
+      Reusing the same branchId → 500 error.
 
-   c. IMPORTANT: After creating each node, a NEW branch is created.
-      You MUST re-fetch branches before adding the next node.
-      Reusing the same branchId causes a 500 error.
-
-6. Set schedule
-   PUT /workspaces/{wks}/sequences/{seq}/schedule
+5. mcp__salesforge__update_sequence_schedule
    Mon-Fri 8-17, disabled days: from:0 to:23
 
-7. Configure settings
-   PATCH /workspaces/{wks}/sequences/{seq}/settings
-   plainText=true, openTracking=false
+6. mcp__salesforge__update_sequence_settings
+   plainTextEmailsEnabled: true, openTrackingEnabled: false
 
-8. Attach sender profiles
-   GET /workspaces/{wks}/sender-profiles → response key is "profiles"
-   POST /workspaces/{wks}/sequences/{seq}/sender-profiles
-   {"senderProfileIds": [5822, 5823]}  ← INTEGER array
-   NOTE: Profiles must be created in dashboard first
+7. mcp__salesforge__list_sender_profiles → get sender IDs
+   mcp__salesforge__assign_sender_profiles_to_sequence
+   senderProfileIds: [integer array]
 
-9. Verify
-   GET /workspaces/{wks}/sequences/{seq} → confirm setup
-   GET /workspaces/{wks}/sequences/{seq}/nodes → verify all steps
+8. mcp__salesforge__get_sequence → verify setup
+   mcp__salesforge__list_sequence_nodes → verify all steps
 ```
 
 ### IMPORTANT: DO NOT ACTIVATE.
 
-**Never call the /launch endpoint. Sequence stays DRAFT. Launch is manual.**
+**Never call mcp__salesforge__launch_sequence. Sequence stays DRAFT. Launch is always manual by the user.**
 
 ---
 
