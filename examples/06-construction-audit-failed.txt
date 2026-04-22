@@ -4,21 +4,35 @@
 # Sequence: 2 emails + LinkedIn view + connect + message + follow-up
 
 --- STEP 1: EMAIL (Day 0) ---
-Subject: {{first_name}}, OSHA safety compliance at {{company}}
-Body: OSHA cited a contractor in your area for incomplete safety documentation. Most construction companies we talk to are still managing this manually. We helped a similar company automate their OSHA safety compliance and cut documentation time by 60%. If that is relevant for {{company}}, worth a quick chat?
+Subject: {{first_name}}, {{OSHA flagged your safety records | OSHA citation in your area | safety documentation gaps at {{company}}}}
+Body:
+
+{{OSHA cited a contractor in your area for incomplete safety documentation. | A contractor in your region just got hit with a $500K OSHA violation for missing safety records. | OSHA inspections are flagging more construction companies for documentation gaps this year.}}
+
+{{Most construction companies we talk to still manage safety logs and inspection records in spreadsheets and jobsite folders. | The majority of contractors are still doing safety compliance on paper across jobsites. | Nearly every contractor we speak with has safety documentation spread across folders, emails, and spreadsheets.}}
+
+{{We helped a similar contractor automate their safety documentation and they have not had a citation in 3 years. | A contractor running 8 simultaneous jobsites automated compliance with us and saved 20 hours per week. | One of our construction clients automated their OSHA compliance and passed every inspection since.}}
+
+{{If that is relevant for {{company}}, worth 5 minutes to see how it works? | Does this sound like what {{company}} is dealing with? | Would it make sense to show you how this applies to {{company}}?}}
 
 --- STEP 2: EMAIL FOLLOW-UP (Day 3) ---
-Subject: {{first_name}}, OSHA safety compliance at {{company}}
-Body: Quick context on this — the company we worked with had the same manual processes. One failed audit later, they automated everything. Have not had an issue since. Happy to share what they changed if useful for {{company}}.
+Subject: {{first_name}}, OSHA flagged your safety records
+Body:
+
+{{Quick context on the $500K fine — it was preventable. | To give you context — the citation was entirely avoidable. | For reference — the contractor had the data but could not produce it during inspection.}}
+
+{{The contractor had the safety data but could not produce it because it was spread across spreadsheets and jobsite folders. | Their records existed but were scattered across 5 different systems and paper logs. | Everything was there — just impossible to assemble in the 24 hours OSHA gave them.}}
+
+{{Automated audit trails solve this. Takes 2 weeks to set up. Want me to walk you through it? | We automate this in under 2 weeks. Happy to show you how. | This is exactly what we fix — happy to share the playbook if useful for {{company}}.}}
 
 --- STEP 3: LINKEDIN VIEW PROFILE (Day 4) ---
 (no message — silent touch)
 
 --- STEP 4: LINKEDIN CONNECTION REQUEST (Day 5) ---
-Message: {{first_name}}, I work with construction companies on OSHA safety compliance automation. Noticed {{company}} is growing — thought it would be worth connecting.
+Message: {{first_name}}, I work with construction companies on OSHA compliance automation. Noticed {{company}} is scaling — thought it would be worth connecting.
 
 --- STEP 5: LINKEDIN MESSAGE (Day 7) ---
-Message: Thanks for connecting, {{first_name}}. I noticed {{company}} is in a space where OSHA safety compliance is getting more complex. We built a short walkthrough showing how similar companies automated this and cut documentation time by 60%. Want me to send it over?
+Message: Thanks for connecting, {{first_name}}. I noticed {{company}} is in a space where OSHA compliance gets harder with every new jobsite. We built a short walkthrough showing how contractors automate safety documentation and save 20+ hours per week. Want me to send it over?
 
 --- STEP 6: LINKEDIN FOLLOW-UP (Day 10) ---
-Message: Last note on this, {{first_name}}. If OSHA safety compliance is already handled at {{company}}, no worries at all. But if your team is still doing it manually, this 15-minute walkthrough has helped 20+ construction companies understand the gap. Happy to share if useful.
+Message: Last note on this, {{first_name}}. If compliance is already handled at {{company}}, no worries at all. But if your team is spending more time on paperwork than on actual jobsites, that is exactly what we fix. Happy to show you how.

@@ -4,12 +4,26 @@
 # Sequence: 2 emails + LinkedIn view + connect + message + follow-up
 
 --- STEP 1: EMAIL (Day 0) ---
-Subject: {{first_name}}, HIPAA compliance at {{company}}
-Body: HIPAA audit flagged a multi-clinic group for incomplete patient data records. Most healthcare companies we talk to are still managing this manually. We helped a similar company automate their HIPAA compliance and cut documentation time by 60%. If that is relevant for {{company}}, worth a quick chat?
+Subject: {{first_name}}, {{HIPAA documentation gaps at {{company}} | HIPAA compliance risk at {{company}} | compliance gaps flagged in your sector}}
+Body:
+
+{{HIPAA audit flagged a multi-clinic group for incomplete patient data records. | A healthcare group in your region was just cited for HIPAA documentation gaps. | Regulators are increasing scrutiny on patient data handling across multi-location practices.}}
+
+{{Most healthcare companies we talk to are still managing compliance manually. | The majority of healthcare groups still track compliance in spreadsheets. | Nearly every multi-clinic group we speak with is doing this by hand.}}
+
+{{We helped a similar company automate their HIPAA compliance and cut documentation time by 60%. | A similar healthcare group automated their compliance workflows with us and saved 30+ hours per week. | One of our clients in healthcare automated their audit trail and has not had a finding since.}}
+
+{{If that is relevant for {{company}}, worth a quick chat? | Does this resonate with what {{company}} is dealing with? | Would it make sense to show you how this works for {{company}}?}}
 
 --- STEP 2: EMAIL FOLLOW-UP (Day 3) ---
-Subject: {{first_name}}, HIPAA compliance at {{company}}
-Body: Quick context on this — the company we worked with had the same manual processes. One failed audit later, they automated everything. Have not had an issue since. Happy to share what they changed if useful for {{company}}.
+Subject: {{first_name}}, HIPAA documentation gaps at {{company}}
+Body:
+
+{{Quick context on this — the company we worked with had the same manual processes. | To give you a sense — a similar group was managing HIPAA compliance the same way. | For context — we worked with a healthcare group facing the exact same challenge.}}
+
+{{One failed audit later, they automated everything. Have not had an issue since. | After one audit finding, they switched to automated workflows. Zero issues since. | A single audit flag pushed them to automate — and they have been clean ever since.}}
+
+{{Happy to share what they changed if useful for {{company}}. | Want me to walk you through what they did differently? | I can share the exact playbook if that would help {{company}}.}}
 
 --- STEP 3: LINKEDIN VIEW PROFILE (Day 4) ---
 (no message — silent touch)
@@ -18,7 +32,7 @@ Body: Quick context on this — the company we worked with had the same manual p
 Message: {{first_name}}, I work with healthcare companies on HIPAA compliance automation. Noticed {{company}} is growing — thought it would be worth connecting.
 
 --- STEP 5: LINKEDIN MESSAGE (Day 7) ---
-Message: Thanks for connecting, {{first_name}}. I noticed {{company}} is in a space where HIPAA compliance is getting more complex. We built a short walkthrough showing how similar companies automated this and cut documentation time by 60%. Want me to send it over?
+Message: Thanks for connecting, {{first_name}}. I noticed {{company}} is in a space where HIPAA compliance is getting more complex every year. We built a short walkthrough showing how similar healthcare companies automated this and cut documentation time by 60%. Want me to send it over?
 
 --- STEP 6: LINKEDIN FOLLOW-UP (Day 10) ---
 Message: Last note on this, {{first_name}}. If HIPAA compliance is already handled at {{company}}, no worries at all. But if your team is still doing it manually, this 15-minute walkthrough has helped 20+ healthcare companies understand the gap. Happy to share if useful.
