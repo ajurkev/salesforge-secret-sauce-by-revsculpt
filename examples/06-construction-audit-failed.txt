@@ -1,0 +1,24 @@
+# Campaign 06 — MULTICHANNEL — Construction + Audit Failed
+# Vertical: Construction | Trigger: Audit Failed | Regulator: OSHA
+# Buyer: Owner, VP Operations, Safety Director
+# Sequence: 2 emails + LinkedIn view + connect + message + follow-up
+
+--- STEP 1: EMAIL (Day 0) ---
+Subject: {{first_name}}, OSHA safety compliance at {{company}}
+Body: OSHA cited a contractor in your area for incomplete safety documentation. Most construction companies we talk to are still managing this manually. We helped a similar company automate their OSHA safety compliance and cut documentation time by 60%. If that is relevant for {{company}}, worth a quick chat?
+
+--- STEP 2: EMAIL FOLLOW-UP (Day 3) ---
+Subject: {{first_name}}, OSHA safety compliance at {{company}}
+Body: Quick context on this — the company we worked with had the same manual processes. One failed audit later, they automated everything. Have not had an issue since. Happy to share what they changed if useful for {{company}}.
+
+--- STEP 3: LINKEDIN VIEW PROFILE (Day 4) ---
+(no message — silent touch)
+
+--- STEP 4: LINKEDIN CONNECTION REQUEST (Day 5) ---
+Message: {{first_name}}, I work with construction companies on OSHA safety compliance automation. Noticed {{company}} is growing — thought it would be worth connecting.
+
+--- STEP 5: LINKEDIN MESSAGE (Day 7) ---
+Message: Thanks for connecting, {{first_name}}. I noticed {{company}} is in a space where OSHA safety compliance is getting more complex. We built a short walkthrough showing how similar companies automated this and cut documentation time by 60%. Want me to send it over?
+
+--- STEP 6: LINKEDIN FOLLOW-UP (Day 10) ---
+Message: Last note on this, {{first_name}}. If OSHA safety compliance is already handled at {{company}}, no worries at all. But if your team is still doing it manually, this 15-minute walkthrough has helped 20+ construction companies understand the gap. Happy to share if useful.

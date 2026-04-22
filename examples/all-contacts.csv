@@ -1,0 +1,31 @@
+first_name,last_name,email,company,title,industry,vertical_tag,linkedin_url
+John,Mitchell,john.mitchell@test-healthcare-demo.com,Mercy Health Partners,CFO,Healthcare,healthcare,https://linkedin.com/in/john-mitchell-test
+Sarah,Chen,sarah.chen@test-healthcare-demo.com,Pacific Medical Group,VP Operations,Healthcare,healthcare,https://linkedin.com/in/sarah-chen-test
+Michael,Rodriguez,michael.rodriguez@test-healthcare-demo.com,Summit Clinics,Compliance Director,Healthcare,healthcare,https://linkedin.com/in/michael-rodriguez-test
+Lisa,Thompson,lisa.thompson@test-construction-demo.com,Cornerstone Construction,Owner,Construction,construction,https://linkedin.com/in/lisa-thompson-test
+David,Park,david.park@test-construction-demo.com,Atlas Builders Group,VP Operations,Construction,construction,https://linkedin.com/in/david-park-test
+Amanda,Foster,amanda.foster@test-construction-demo.com,Premier Contractors,Safety Director,Construction,construction,https://linkedin.com/in/amanda-foster-test
+Robert,Kim,robert.kim@test-logistics-demo.com,Pacific Freight Solutions,VP Operations,Logistics,logistics,https://linkedin.com/in/robert-kim-test
+Thomas,Anderson,thomas.anderson@test-logistics-demo.com,Continental Logistics,COO,Logistics,logistics,https://linkedin.com/in/thomas-anderson-test
+Emily,Davis,emily.davis@test-logistics-demo.com,Apex Shipping Co,Director of Compliance,Logistics,logistics,https://linkedin.com/in/emily-davis-test
+Rachel,Green,rachel.green@test-manufacturing-demo.com,Precision Manufacturing,VP Operations,Manufacturing,manufacturing,https://linkedin.com/in/rachel-green-test
+James,Wilson,james.wilson@test-manufacturing-demo.com,Sterling Industries,Quality Director,Manufacturing,manufacturing,https://linkedin.com/in/james-wilson-test
+Jennifer,Martinez,jennifer.martinez@test-manufacturing-demo.com,National Materials Corp,Plant Manager,Manufacturing,manufacturing,https://linkedin.com/in/jennifer-martinez-test
+Kevin,Brown,kevin.brown@test-foodbev-demo.com,Fresh Fields Foods,VP Quality,Food & Beverage,foodbev,https://linkedin.com/in/kevin-brown-test
+Daniel,Lee,daniel.lee@test-foodbev-demo.com,Pacific Harvest Co,COO,Food & Beverage,foodbev,https://linkedin.com/in/daniel-lee-test
+Maria,Gonzalez,maria.gonzalez@test-foodbev-demo.com,Valley Fresh Processing,Director of Operations,Food & Beverage,foodbev,https://linkedin.com/in/maria-gonzalez-test
+Andrew,Taylor,andrew.taylor@test-finance-demo.com,Meridian Capital Group,CFO,Financial Services,finance,https://linkedin.com/in/andrew-taylor-test
+Nicole,Harris,nicole.harris@test-finance-demo.com,Stratton Financial,VP Compliance,Financial Services,finance,https://linkedin.com/in/nicole-harris-test
+Chris,Clark,chris.clark@test-finance-demo.com,Clearview Advisory,COO,Financial Services,finance,https://linkedin.com/in/chris-clark-test
+Laura,Lewis,laura.lewis@test-legal-demo.com,Harrison & Webb LLP,Managing Partner,Legal,legal,https://linkedin.com/in/laura-lewis-test
+Mark,Walker,mark.walker@test-legal-demo.com,Cornerstone Legal Group,COO,Legal,legal,https://linkedin.com/in/mark-walker-test
+Brian,Hall,brian.hall@test-legal-demo.com,Whitfield Partners,Director of Operations,Legal,legal,https://linkedin.com/in/brian-hall-test
+Jessica,Allen,jessica.allen@test-energy-demo.com,Summit Energy Corp,VP Operations,Energy,energy,https://linkedin.com/in/jessica-allen-test
+Steven,Young,steven.young@test-energy-demo.com,Clearwater Resources,EHS Director,Energy,energy,https://linkedin.com/in/steven-young-test
+Angela,King,angela.king@test-energy-demo.com,Apex Power Solutions,COO,Energy,energy,https://linkedin.com/in/angela-king-test
+Patrick,Wright,patrick.wright@test-realestate-demo.com,Crestview Properties,VP Property Management,Real Estate,realestate,https://linkedin.com/in/patrick-wright-test
+Michelle,Scott,michelle.scott@test-realestate-demo.com,Landmark Management Group,Portfolio Manager,Real Estate,realestate,https://linkedin.com/in/michelle-scott-test
+Gregory,Adams,gregory.adams@test-realestate-demo.com,Evergreen Residential,COO,Real Estate,realestate,https://linkedin.com/in/gregory-adams-test
+Stephanie,Nelson,stephanie.nelson@test-insurance-demo.com,Pacific Mutual Insurance,VP Compliance,Insurance,insurance,https://linkedin.com/in/stephanie-nelson-test
+Timothy,Carter,timothy.carter@test-insurance-demo.com,Bridgeport Underwriters,COO,Insurance,insurance,https://linkedin.com/in/timothy-carter-test
+Catherine,Phillips,catherine.phillips@test-insurance-demo.com,Keystone Risk Group,Operations Director,Insurance,insurance,https://linkedin.com/in/catherine-phillips-test
